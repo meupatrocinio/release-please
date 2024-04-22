@@ -443,7 +443,7 @@ export class GitHub {
       cursor,
       owner: this.repository.owner,
       repo: this.repository.repo,
-      num: 15,
+      num: 1,
       targetBranch,
       maxFilesChanged: 50, // max is 100
     };
