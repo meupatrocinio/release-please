@@ -158,6 +158,7 @@ interface ReleaseHistory {
 interface CommitIteratorOptions {
   maxResults?: number;
   backfillFiles?: boolean;
+  batchSize?: number;
 }
 
 interface ReleaseIteratorOptions {
@@ -362,6 +363,7 @@ export class GitHub {
     options: CommitIteratorOptions = {}
   ) {
     const maxResults = options.maxResults ?? Number.MAX_SAFE_INTEGER;
+    const batchSize = options.batchSize ?? 100; // Adjust the batch size as needed
     let cursor: string | undefined = undefined;
     let results = 0;
     while (results < maxResults) {
@@ -443,9 +445,9 @@ export class GitHub {
       cursor,
       owner: this.repository.owner,
       repo: this.repository.repo,
-      num: 10,
+      num: options.batchSize ?? 10, // Use the batchSize from options
       targetBranch,
-      maxFilesChanged: 100, // max is 100
+      maxFilesChanged: 60, // max is 100
     };
     const response = await this.graphqlRequest({
       query,
